@@ -4,9 +4,7 @@
 %--------------------------------------------------------------
 function [ret_val] = getConfiguration(argType)
     if(argType == 1)
-        path = '/Users/chaerim/EdgeCloudSim-master/scripts/sample_app1/out/default_config';
-        ret_val = path;
-        
+        ret_val = '/Users/chaerim/EdgeCloudSim-master/scripts/sample_app1/output/27-02-2020_10-20/default_config';        
     elseif(argType == 2)
         ret_val = 4; %Number of iterations
     elseif(argType == 3)

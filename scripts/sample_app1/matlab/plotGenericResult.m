@@ -1,69 +1,69 @@
 function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculatePercentage)
     folderPath = getConfiguration(1);
-        fprintf(folderPath);
-
     numOfSimulations = getConfiguration(2);
     startOfMobileDeviceLoop = getConfiguration(3);
     stepOfMobileDeviceLoop = getConfiguration(4);
     endOfMobileDeviceLoop = getConfiguration(5);
     xTickLabelCoefficient = getConfiguration(6);
-    
+
     scenarioType = getConfiguration(7);
     legends = getConfiguration(8);
     numOfMobileDevices = (endOfMobileDeviceLoop - startOfMobileDeviceLoop)/stepOfMobileDeviceLoop + 1;
 
     pos=getConfiguration(9);
-    
+
     all_results = zeros(numOfSimulations, size(scenarioType,2), numOfMobileDevices);
     min_results = zeros(size(scenarioType,2), numOfMobileDevices);
     max_results = zeros(size(scenarioType,2), numOfMobileDevices);
-    
+
     for s=1:numOfSimulations
         for i=1:size(scenarioType,2)
             for j=1:numOfMobileDevices
                 try
                     mobileDeviceNumber = startOfMobileDeviceLoop + stepOfMobileDeviceLoop * (j-1);
-                        fprintf(folderPath);
+                    filePath = strcat(folderPath,'/ite',int2str(s),'/SIMRESULT_',char(scenarioType(i)),'_NEXT_FIT_',int2str(mobileDeviceNumber),'DEVICES_',appType,'_GENERIC.log')
 
-                    filePath = strcat(folderPath,'/ite',int2str(s),'/SIMRESULT_',char(scenarioType(i)),'_NEXT_FIT_',int2str(mobileDeviceNumber),'DEVICES_',appType,'_GENERIC.log');
+%                     fprintf(filePath)
+
+                    if isfile(filePath)
+                        readData = dlmread(filePath,';',rowOfset,0);
+                        value = readData(1,columnOfset);
+                        
+                        if(strcmp(calculatePercentage,'percentage_for_all'))
+                            readData = dlmread(filePath,';',1,0);
+                            totalTask = readData(1,1)+readData(1,2);
+                            value = (100 * value) / totalTask;
+                        elseif(strcmp(calculatePercentage,'percentage_for_completed'))
+                            readData = dlmread(filePath,';',1,0);
+                            totalTask = readData(1,1);
+                            value = (100 * value) / totalTask;
+                        elseif(strcmp(calculatePercentage,'percentage_for_failed'))
+                            readData = dlmread(filePath,';',1,0);
+                            totalTask = readData(1,2);
+                            value = (100 * value) / totalTask;
+                        end
                     
-%                     fprintf('job done \n')
-                    
-                    readData = dlmread(filePath,';',rowOfset,0);
-%                     readData = readData[1];
-                    
-                    value = readData(1,columnOfset);
-                    
-                    if(strcmp(calculatePercentage,'percentage_for_all'))
-                        readData = dlmread(filePath,';',1,0);
-                		totalTask = readData(1,1)+readData(1,2);
-                        value = (100 * value) / totalTask;
-                    elseif(strcmp(calculatePercentage,'percentage_for_completed'))
-                        readData = dlmread(filePath,';',1,0);
-                		totalTask = readData(1,1);
-                        value = (100 * value) / totalTask;
-                    elseif(strcmp(calculatePercentage,'percentage_for_failed'))
-                        readData = dlmread(filePath,';',1,0);
-                		totalTask = readData(1,2);
-                        value = (100 * value) / totalTask;
+                        all_results(s,i,j) = value;
+
+                    else
+                        fprintf('file doenst exist');
                     end
-
-                    all_results(s,i,j) = value;
+                    
                 catch err
                     error(err)
                 end
             end
         end
     end
-    
+
     if(numOfSimulations == 1)
         results = all_results;
     else
         results = mean(all_results); %still 3d matrix but 1xMxN format
     end
-    
+
     results = squeeze(results); %remove singleton dimensions
-    
+
     for i=1:size(scenarioType,2)
         for j=1:numOfMobileDevices
             x=all_results(:,i,j);                    % Create Data
@@ -83,12 +83,12 @@ function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculat
             max_results(i,j) = CI(2) - results(i,j);
         end
     end
-    
+
     types = zeros(1,numOfMobileDevices);
     for i=1:numOfMobileDevices
         types(i)=startOfMobileDeviceLoop+((i-1)*stepOfMobileDeviceLoop);
     end
-    
+
     hFig = figure;
     set(hFig, 'Units','centimeters');
     set(hFig, 'Position',pos);
@@ -99,14 +99,14 @@ function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculat
     if(getConfiguration(20) == 1)
         for i=1:1:numOfMobileDevices
             xIndex=startOfMobileDeviceLoop+((i-1)*stepOfMobileDeviceLoop);
-            
+
             markers = getConfiguration(50);
             for j=1:size(scenarioType,2)
                 plot(xIndex, results(j,i),char(markers(j)),'MarkerFaceColor',getConfiguration(20+j),'color',getConfiguration(20+j));
                 hold on;
             end
         end
-        
+
         for j=1:size(scenarioType,2)
             if(getConfiguration(12) == 1)
                 errorbar(types, results(j,:), min_results(j,:),max_results(j,:),':k','color',getConfiguration(20+j),'LineWidth',1.5);
@@ -115,7 +115,7 @@ function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculat
             end
             hold on;
         end
-    
+
         set(gca,'color','none');
     else
         markers = getConfiguration(40);
@@ -127,9 +127,9 @@ function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculat
             end
             hold on;
         end
-        
+
     end
-    
+
     lgnd = legend(legends,'Location','NorthWest');
     if(getConfiguration(20) == 1)
         set(lgnd,'color','none');
@@ -142,17 +142,17 @@ function [] = plotGenericResult(rowOfset, columnOfset, yLabel, appType, calculat
     set(gca,'XTickLabel', (startOfMobileDeviceLoop*xTickLabelCoefficient):(stepOfMobileDeviceLoop*xTickLabelCoefficient):endOfMobileDeviceLoop);
     ylabel(yLabel);
     set(gca,'XLim',[startOfMobileDeviceLoop-5 endOfMobileDeviceLoop+5]);
-    
+
     set(get(gca,'Xlabel'),'FontSize',12)
     set(get(gca,'Ylabel'),'FontSize',12)
     set(lgnd,'FontSize',11)
-    
+
     if(getConfiguration(11) == 1)
         set(hFig, 'PaperUnits', 'centimeters');
         set(hFig, 'PaperPositionMode', 'manual');
         set(hFig, 'PaperPosition',[0 0 pos(3) pos(4)]);
         set(gcf, 'PaperSize', [pos(3) pos(4)]); %Keep the same paper size
         filename = strcat(folderPath,'\',int2str(rowOfset),'_',int2str(columnOfset),'_',appType);
-        saveas(gcf, filename, 'pdf');
+        saveas(gcf, filename, 'png');
     end
 end
