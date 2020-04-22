@@ -20,8 +20,6 @@ bin
 .classpath
 .project
 
-# IntelliJ project files
-.idea
-*.iml
-out
-gen
+
+# results file
+/scripts/sample_app1/output

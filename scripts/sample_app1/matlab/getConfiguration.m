@@ -1,18 +1,18 @@
 %--------------------------------------------------------------
-% % % %description
+%description
 % returns a value according to the given argumentssss
 %--------------------------------------------------------------
 function [ret_val] = getConfiguration(argType)
     if(argType == 1)
-        ret_val = '/Users/chaerim/EdgeCloudSim-master/scripts/sample_app1/output/27-02-2020_10-20/default_config';        
+        ret_val = '/Users/chaerim/EdgeCloudSim-2default/scripts/sample_app1/output/SonmezDef-04-04-2020_18-57/default_config';
     elseif(argType == 2)
-        ret_val = 4; %Number of iterations
+        ret_val = 3; %Number of iterations
     elseif(argType == 3)
-        ret_val = 100; %min number of mobile device
+        ret_val = 50; %min number of mobile device
     elseif(argType == 4)
-        ret_val = 100; %step size of mobile device count
+        ret_val = 25; %step size of mobile device count
     elseif(argType == 5)
-        ret_val =1000; %max number of mobile device
+        ret_val =250; %max number of mobile device
     elseif(argType == 6)
         ret_val = 1; %xTickLabelCoefficient
     elseif(argType == 7)

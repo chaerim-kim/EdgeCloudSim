@@ -77,7 +77,7 @@
 			<x_pos>3</x_pos>
 			<y_pos>3</y_pos>
 			<wlan_id>2</wlan_id>
-			<attractiveness>1</attractiveness>
+			<attractiveness>0</attractiveness>
 		</location>
 		<hosts>
 			<host>
@@ -111,7 +111,7 @@
 			<x_pos>4</x_pos>
 			<y_pos>4</y_pos>
 			<wlan_id>3</wlan_id>
-			<attractiveness>1</attractiveness>
+			<attractiveness>0</attractiveness>
 		</location>
 		<hosts>
 			<host>
@@ -213,7 +213,7 @@
 			<x_pos>7</x_pos>
 			<y_pos>7</y_pos>
 			<wlan_id>6</wlan_id>
-			<attractiveness>2</attractiveness>
+			<attractiveness>1</attractiveness>
 		</location>
 		<hosts>
 			<host>
@@ -247,7 +247,7 @@
 			<x_pos>8</x_pos>
 			<y_pos>8</y_pos>
 			<wlan_id>7</wlan_id>
-			<attractiveness>2</attractiveness>
+			<attractiveness>1</attractiveness>
 		</location>
 		<hosts>
 			<host>
@@ -408,72 +408,5 @@
 			</host>
 		</hosts>
 	</datacenter>
-	<datacenter arch="x86" os="Linux" vmm="Xen">
-		<costPerBw>0.1</costPerBw>
-		<costPerSec>3.0</costPerSec>
-		<costPerMem>0.05</costPerMem>
-		<costPerStorage>0.1</costPerStorage>
-		<location>
-			<x_pos>13</x_pos>
-			<y_pos>13</y_pos>
-			<wlan_id>12</wlan_id>
-			<attractiveness>2</attractiveness>
-		</location>
-		<hosts>
-			<host>
-				<core>8</core>
-				<mips>4000</mips>
-				<ram>8000</ram>
-				<storage>200000</storage>
-				<VMs>
-					<VM vmm="Xen">
-						<core>2</core>
-						<mips>1000</mips>
-						<ram>2000</ram>
-						<storage>50000</storage>
-					</VM>
-					<VM vmm="Xen">
-						<core>2</core>
-						<mips>1000</mips>
-						<ram>2000</ram>
-						<storage>50000</storage>
-					</VM>
-				</VMs>
-			</host>
-		</hosts>
-	</datacenter>
-	<datacenter arch="x86" os="Linux" vmm="Xen">
-		<costPerBw>0.1</costPerBw>
-		<costPerSec>3.0</costPerSec>
-		<costPerMem>0.05</costPerMem>
-		<costPerStorage>0.1</costPerStorage>
-		<location>
-			<x_pos>14</x_pos>
-			<y_pos>14</y_pos>
-			<wlan_id>13</wlan_id>
-			<attractiveness>2</attractiveness>
-		</location>
-		<hosts>
-			<host>
-				<core>8</core>
-				<mips>4000</mips>
-				<ram>8000</ram>
-				<storage>200000</storage>
-				<VMs>
-					<VM vmm="Xen">
-						<core>2</core>
-						<mips>1000</mips>
-						<ram>2000</ram>
-						<storage>50000</storage>
-					</VM>
-					<VM vmm="Xen">
-						<core>2</core>
-						<mips>1000</mips>
-						<ram>2000</ram>
-						<storage>50000</storage>
-					</VM>
-				</VMs>
-			</host>
-		</hosts>
-	</datacenter>
+	
 </edge_devices>

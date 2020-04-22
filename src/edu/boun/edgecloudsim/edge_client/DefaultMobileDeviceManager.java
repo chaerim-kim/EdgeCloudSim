@@ -26,7 +26,7 @@ import edu.boun.edgecloudsim.core.SimManager;
 import edu.boun.edgecloudsim.core.SimSettings;
 import edu.boun.edgecloudsim.core.SimSettings.NETWORK_DELAY_TYPES;
 import edu.boun.edgecloudsim.network.NetworkModel;
-import edu.boun.edgecloudsim.utils.TaskProperty;
+import edu.boun.edgecloudsim.utils.EdgeTask;
 import edu.boun.edgecloudsim.utils.Location;
 import edu.boun.edgecloudsim.utils.SimLogger;
 
@@ -154,7 +154,7 @@ public class DefaultMobileDeviceManager extends MobileDeviceManager {
 				
 				if(task.getAssociatedDatacenterId() == SimSettings.CLOUD_DATACENTER_ID)
 					networkModel.downloadFinished(task.getSubmittedLocation(), SimSettings.CLOUD_DATACENTER_ID);
-				else if(task.getAssociatedDatacenterId() != SimSettings.MOBILE_DATACENTER_ID)
+				else
 					networkModel.downloadFinished(task.getSubmittedLocation(), SimSettings.GENERIC_EDGE_DEVICE_ID);
 				
 				SimLogger.getInstance().taskEnded(task.getCloudletId(), CloudSim.clock());
@@ -167,7 +167,7 @@ public class DefaultMobileDeviceManager extends MobileDeviceManager {
 		}
 	}
 
-	public void submitTask(TaskProperty edgeTask) {
+	public void submitTask(EdgeTask edgeTask) {
 		NetworkModel networkModel = SimManager.getInstance().getNetworkModel();
 		
 		//create a task
@@ -271,18 +271,18 @@ public class DefaultMobileDeviceManager extends MobileDeviceManager {
 		}
 	}
 	
-	private Task createTask(TaskProperty edgeTask){
+	private Task createTask(EdgeTask edgeTask){
 		UtilizationModel utilizationModel = new UtilizationModelFull(); /*UtilizationModelStochastic*/
 		UtilizationModel utilizationModelCPU = getCpuUtilizationModel();
 
-		Task task = new Task(edgeTask.getMobileDeviceId(), ++taskIdCounter,
-				edgeTask.getLength(), edgeTask.getPesNumber(),
-				edgeTask.getInputFileSize(), edgeTask.getOutputFileSize(),
+		Task task = new Task(edgeTask.mobileDeviceId, ++taskIdCounter,
+				edgeTask.length, edgeTask.pesNumber,
+				edgeTask.inputFileSize, edgeTask.outputFileSize,
 				utilizationModelCPU, utilizationModel, utilizationModel);
 		
 		//set the owner of this task
 		task.setUserId(this.getId());
-		task.setTaskType(edgeTask.getTaskType());
+		task.setTaskType(edgeTask.taskType);
 		
 		if (utilizationModelCPU instanceof CpuUtilizationModel_Custom) {
 			((CpuUtilizationModel_Custom)utilizationModelCPU).setTask(task);

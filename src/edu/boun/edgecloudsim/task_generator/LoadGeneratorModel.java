@@ -15,10 +15,10 @@ package edu.boun.edgecloudsim.task_generator;
 
 import java.util.List;
 
-import edu.boun.edgecloudsim.utils.TaskProperty;
+import edu.boun.edgecloudsim.utils.EdgeTask;
 
 public abstract class LoadGeneratorModel {
-	protected List<TaskProperty> taskList;
+	protected List<EdgeTask> taskList;
 	protected int numberOfMobileDevices;
 	protected double simulationTime;
 	protected String simScenario;
@@ -33,7 +33,7 @@ public abstract class LoadGeneratorModel {
 	 * each task has a virtual start time
 	 * it will be used while generating task
 	 */
-	public List<TaskProperty> getTaskList() {
+	public List<EdgeTask> getTaskList() {
 		return taskList;
 	}
 
